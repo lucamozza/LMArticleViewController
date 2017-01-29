@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <LMNewsArticleViewController.h>
 
 //! Project version number for LMArticleViewController.
 FOUNDATION_EXPORT double LMArticleViewControllerVersionNumber;
