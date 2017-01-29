@@ -8,6 +8,7 @@
 
 #import "LMArticleViewController.h"
 #import <TLYShyNavBar/TLYShyNavBarManager.h>
+#import <ChameleonFramework/Chameleon.h>
 
 @interface LMArticleViewController () {
     BOOL backgroundColorSet;
@@ -40,14 +41,14 @@
     authorColorSet = NO;
     bodyColorSet = NO;
     
-    if ( self.autoColored ) {
+    if ( self.autoColored && self.image ) {
         // Set auto colors!
-        self.backgroundColor = [UIColor whiteColor];
-        [self setupUI];
+        self.backgroundColor = [UIColor colorWithAverageColorFromImage:self.image];
     }
     else {
-        [self setupUI];
+        self.backgroundColor = [UIColor whiteColor];
     }
+    [self setupUI];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
