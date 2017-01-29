@@ -145,7 +145,7 @@
     
     self.headlineLabel.numberOfLines = 0;
     [self.headlineLabel sizeToFit];
-    self.headlineLabel.font = [UIFont fontWithName:@"Nexa Bold" size:36];
+    self.headlineLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:36];
     // Set font here! (size 36)
 }
 
@@ -165,7 +165,7 @@
     
     self.authorLabel.numberOfLines = 0;
     [self.authorLabel sizeToFit];
-    self.authorLabel.font = [UIFont fontWithName:@"Roboto-Medium" size:20];
+    self.authorLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
     // Set font here! (size 12)
     
 }
@@ -186,7 +186,7 @@
     
     self.dateLabel.numberOfLines = 0;
     [self.dateLabel sizeToFit];
-    self.dateLabel.font = [UIFont fontWithName:@"Roboto-Regular" size:12];
+    self.dateLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
     // Set font here (size 12)
 }
 
@@ -210,7 +210,7 @@
     
     self.bodyLabel.numberOfLines = 0;
     
-    self.bodyLabel.font = [UIFont fontWithName:@"Roboto-Regular" size:20];
+    self.bodyLabel.font = [UIFont fontWithName:@"Georgia" size:20];
     [self.bodyLabel sizeToFit];
     
     
