@@ -6,10 +6,10 @@
 //  Copyright © 2017 Luca Mozzarelli. All rights reserved.
 //
 
-#import "LMNewsArticleViewController.h"
+#import "LMArticleViewController.h"
 #import <TLYShyNavBar/TLYShyNavBarManager.h>
 
-@interface LMNewsArticleViewController () {
+@interface LMArticleViewController () {
     BOOL backgroundColorSet;
     BOOL headlineColorSet;
     BOOL dateColorSet;
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation LMNewsArticleViewController
+@implementation LMArticleViewController
 
 // Setup
 

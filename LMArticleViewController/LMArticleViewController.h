@@ -1,20 +1,25 @@
 //
-//  LMArticleViewController.h
-//  LMArticleViewController
+//  LMNewsArticleViewController.h
+//  Mooves
 //
-//  Created by Luca Mozzarelli on 28/01/17.
+//  Created by Luca Mozzarelli on 10/01/17.
 //  Copyright © 2017 Luca Mozzarelli. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import <LMNewsArticleViewController.h>
 
-//! Project version number for LMArticleViewController.
-FOUNDATION_EXPORT double LMArticleViewControllerVersionNumber;
+@interface LMArticleViewController : UIViewController
+@property (nonatomic) BOOL autoColored;
+@property (strong, nonatomic, setter = setImage:    ) UIImage *image;
+@property (strong, nonatomic, setter = setHeadline: ) NSString *headline;
+@property (strong, nonatomic, setter = setAuthor:   ) NSString *author;
+@property (strong, nonatomic, setter = setDate:     ) NSString *date;
+@property (strong, nonatomic, setter = setBody:     ) NSString *body;
 
-//! Project version string for LMArticleViewController.
-FOUNDATION_EXPORT const unsigned char LMArticleViewControllerVersionString[];
+@property (strong, nonatomic, setter = setBackgroundColor:  ) UIColor *backgroundColor;
+@property (strong, nonatomic, setter = setHeadlineColor:    ) UIColor *headlineColor;
+@property (strong, nonatomic, setter = setDateColor:        ) UIColor *dateColor;
+@property (strong, nonatomic, setter = setAuthorColor:      ) UIColor *authorColor;
+@property (strong, nonatomic, setter = setBodyColor:        ) UIColor *bodyColor;
 
-// In this header, you should import all the public headers of your framework using statements like #import <LMArticleViewController/PublicHeader.h>
-
-
+@end
