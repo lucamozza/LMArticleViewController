@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LMArticleViewController : UIViewController
+@interface LMArticleViewController : UIViewController <UIScrollViewDelegate>
 @property (nonatomic) BOOL autoColored;
 @property (strong, nonatomic, setter = setImage:    ) UIImage *image;
 @property (strong, nonatomic, setter = setHeadline: ) NSString *headline;
@@ -21,5 +21,5 @@
 @property (strong, nonatomic, setter = setDateColor:        ) UIColor *dateColor;
 @property (strong, nonatomic, setter = setAuthorColor:      ) UIColor *authorColor;
 @property (strong, nonatomic, setter = setBodyColor:        ) UIColor *bodyColor;
-
+@property (strong, nonatomic, setter = setTextColor:        ) UIColor *textColor;
 @end

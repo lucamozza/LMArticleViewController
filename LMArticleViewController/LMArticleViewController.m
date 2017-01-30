@@ -17,6 +17,8 @@
     BOOL authorColorSet;
     BOOL bodyColorSet;
 }
+
+
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIView *backgroundView;
 @property (strong, nonatomic) UIImageView *imageView;
@@ -25,6 +27,9 @@
 @property (strong, nonatomic) UILabel *dateLabel;
 @property (strong, nonatomic) UIView *divider;
 @property (strong, nonatomic) UILabel *bodyLabel;
+@property (strong, nonatomic) NSLayoutConstraint *heightConstraint;
+@property (strong, nonatomic) NSLayoutConstraint *topConstraint;
+@property (assign, nonatomic) CGFloat lastContentOffset;
 
 @end
 
@@ -35,24 +40,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    backgroundColorSet = NO;
-    headlineColorSet = NO;
-    dateColorSet = NO;
-    authorColorSet = NO;
-    bodyColorSet = NO;
-    
-    if ( self.autoColored && self.image ) {
-        // Set auto colors!
-        self.backgroundColor = [UIColor colorWithAverageColorFromImage:self.image];
-    }
-    else {
-        self.backgroundColor = [UIColor whiteColor];
-    }
     [self setupUI];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // Default background color is white
+    if ( !backgroundColorSet )
+        self.backgroundColor = [UIColor whiteColor];
+    
     self.shyNavBarManager.scrollView = self.scrollView;
 }
 
@@ -73,7 +70,7 @@
 - (void)setupScrollView {
     
     // Scroll View
-    
+    self.scrollView.delegate = self;
     self.scrollView.translatesAutoresizingMaskIntoConstraints = false;
     [self.view addSubview:self.scrollView];
     
@@ -116,6 +113,7 @@
     [self.backgroundView addSubview:self.imageView];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.backgroundView attribute:NSLayoutAttributeTop multiplier:1 constant:0];
+    self.topConstraint=constraint;
     constraint.active = YES;
     
     constraint = [NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.backgroundView attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
@@ -125,6 +123,7 @@
     constraint.active = YES;
     
     constraint = [NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:self.view.bounds.size.width];
+    self.heightConstraint = constraint;
     constraint.active = YES;
     
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -218,10 +217,15 @@
     // Set font here! (size 20)
 }
 
-// Setters
+// Properties setters
 
 - (void)setImage:(UIImage *)image {
     self.imageView.image = image;
+    
+    if ( self.autoColored ) {
+        self.backgroundColor = [UIColor colorWithAverageColorFromImage:image];
+        self.textColor = [UIColor colorWithContrastingBlackOrWhiteColorOn:self.backgroundColor isFlat:NO];
+    }
 }
 
 - (void)setHeadline:(NSString *)headline {
@@ -266,6 +270,12 @@
     self.bodyLabel.textColor = bodyColor;
 }
 
+- (void)setTextColor:(UIColor *)textColor {
+    self.headlineColor = textColor;
+    self.authorColor = textColor;
+    self.dateColor = textColor;
+    self.bodyColor = textColor;
+}
 
 // Initialization
 
@@ -309,6 +319,21 @@
     if (!_bodyLabel)
         _bodyLabel = [UILabel new];
     return _bodyLabel;
+}
+
+// Animation
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    // Animate imageview when bouncing
+    float contentOffset = scrollView.contentOffset.y;
+    if (scrollView.contentOffset.y < self.imageView.frame.size.height - self.imageView.frame.origin.y)
+        [UIView animateWithDuration:0 animations:^{
+            self.topConstraint.constant = contentOffset;
+            self.heightConstraint.constant = self.view.bounds.size.width-contentOffset;
+        }];
+    
+    
 }
 
 @end
