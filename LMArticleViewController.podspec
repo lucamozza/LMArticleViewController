@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
   
   s.name         = "LMArticleViewController"
-  s.version      = "0.0.1"
+  s.version      = "1.0"
   s.summary      = "An Objective-C subclass of UIViewController inspired by Apple News"
   s.description  = "This subclass of UIViewController provides an article view controller with one top image, title, date, author and body labels."
 
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
 
   s.platform      = :ios, "9.0"
   
-  s.source	  = { :git => "https://github.com/lucamozza/LMArticleViewController.git", :tag => 'v0.0.1-alpha'}
+  s.source	  = { :git => "https://github.com/lucamozza/LMArticleViewController.git", :tag => 'v1.0'}
 
   s.source_files  = "LMArticleViewController", "LMArticleViewController/**/*.{h,m}"
   # s.exclude_files = "Classes/Exclude"
