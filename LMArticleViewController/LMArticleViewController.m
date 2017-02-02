@@ -16,8 +16,8 @@
     BOOL dateColorSet;
     BOOL authorColorSet;
     BOOL bodyColorSet;
+    BOOL stretchImageViewSet;
 }
-
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIView *backgroundView;
@@ -49,6 +49,9 @@
     // Default background color is white
     if ( !backgroundColorSet )
         self.backgroundColor = [UIColor whiteColor];
+    
+    if ( !stretchImageViewSet)
+        self.stretchImageView = YES;
     
     self.shyNavBarManager.scrollView = self.scrollView;
 }
@@ -126,7 +129,10 @@
     self.heightConstraint = constraint;
     constraint.active = YES;
     
-    self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    if (!self.imageViewContentMode)
+        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    else
+        self.imageView.contentMode = self.imageViewContentMode;
 }
 
 - (void)setupHeadline {
@@ -144,9 +150,14 @@
     constraint.active = YES;
     
     self.headlineLabel.numberOfLines = 0;
+    
+    
+    if (!self.headlineFont)
+        self.headlineLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:36];
+    else
+        self.headlineLabel.font = [self.headlineFont fontWithSize:36];
+    
     [self.headlineLabel sizeToFit];
-    self.headlineLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:36];
-    // Set font here! (size 36)
 }
 
 - (void)setupAuthor {
@@ -164,10 +175,14 @@
     constraint.active = YES;
     
     self.authorLabel.numberOfLines = 0;
-    [self.authorLabel sizeToFit];
-    self.authorLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
-    // Set font here! (size 12)
     
+    
+    if (!self.authorFont)
+        self.authorLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
+    else
+        self.authorLabel.font = [self.authorFont fontWithSize:12];
+
+    [self.authorLabel sizeToFit];
 }
 
 - (void)setupDate {
@@ -185,9 +200,14 @@
     constraint.active = YES;
     
     self.dateLabel.numberOfLines = 0;
+    
+    
+    if (!self.dateFont)
+        self.dateLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
+    else
+        self.dateLabel.font = [self.dateFont fontWithSize:12];
+    
     [self.dateLabel sizeToFit];
-    self.dateLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
-    // Set font here (size 12)
 }
 
 - (void)setupBody {
@@ -210,62 +230,89 @@
     
     self.bodyLabel.numberOfLines = 0;
     
-    self.bodyLabel.font = [UIFont fontWithName:@"Georgia" size:20];
+    if (!self.bodyFont)
+        self.bodyLabel.font = [UIFont fontWithName:@"Georgia" size:20];
+    else
+        self.bodyLabel.font = [self.bodyFont fontWithSize:20];
     [self.bodyLabel sizeToFit];
-    
-    
-    // Set font here! (size 20)
 }
 
 // Properties setters
 
 - (void)setImage:(UIImage *)image {
+    
+    _image = image;
+    
     self.imageView.image = image;
+    
+    float imageHeight = image.size.height;
+    float imageWidth  = image.size.width;
+    float imageRatio  = imageWidth/imageHeight;
+    float imageViewHeight = self.view.bounds.size.width/imageRatio;
+    
+    self.heightConstraint.constant = imageViewHeight;
     
     if ( self.autoColored ) {
         self.backgroundColor = [UIColor colorWithAverageColorFromImage:image];
         self.textColor = [UIColor colorWithContrastingBlackOrWhiteColorOn:self.backgroundColor isFlat:NO];
     }
+    
 }
 
 - (void)setHeadline:(NSString *)headline {
+    _headline = headline;
     self.headlineLabel.text = headline;
 }
 
 - (void)setAuthor:(NSString *)author {
+    _author = author;
     self.authorLabel.text = [NSString stringWithFormat:@"by %@", author];
 }
 
-- (void)setDate:(NSString *)date {
-    self.dateLabel.text = date;
+- (void)setDate:(NSDate *)date {
+    _date = date;
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    formatter.dateStyle = NSDateFormatterLongStyle;
+    self.dateString = [formatter stringFromDate:date];
+}
+
+- (void)setDateString:(NSString *)dateString {
+    _dateString = dateString;
+    self.dateLabel.text = dateString;
 }
 
 - (void)setBody:(NSString *)body {
+    _body = body;
     self.bodyLabel.text = body;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
+    _backgroundColor = backgroundColor;
     backgroundColorSet = YES;
     self.backgroundView.backgroundColor = backgroundColor;
     self.view.backgroundColor = backgroundColor;
 }
 
 - (void)setHeadlineColor:(UIColor *)headlineColor {
+    _headlineColor = headlineColor;
     headlineColorSet = YES;
     self.headlineLabel.textColor = headlineColor;
 }
 
 - (void)setDateColor:(UIColor *)dateColor {
+    _dateColor = dateColor;
     dateColorSet = YES;
     self.dateLabel.textColor = dateColor;
 }
 
 - (void)setAuthorColor:(UIColor *)authorColor {
+    _authorColor = authorColor;
     authorColorSet = YES;
     self.authorLabel.textColor = authorColor;
 }
 
 - (void)setBodyColor:(UIColor *)bodyColor {
+    _bodyColor = bodyColor;
     bodyColorSet = YES;
     self.bodyLabel.textColor = bodyColor;
 }
@@ -275,6 +322,11 @@
     self.authorColor = textColor;
     self.dateColor = textColor;
     self.bodyColor = textColor;
+}
+
+- (void)setStretchImageView:(BOOL)stretchImageView {
+    _stretchImageView = stretchImageView;
+    stretchImageViewSet = YES;
 }
 
 // Initialization
@@ -325,15 +377,16 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
-    // Animate imageview when bouncing
-    float contentOffset = scrollView.contentOffset.y;
-    if (scrollView.contentOffset.y < self.imageView.frame.size.height - self.imageView.frame.origin.y)
-        [UIView animateWithDuration:0 animations:^{
-            self.topConstraint.constant = contentOffset;
-            self.heightConstraint.constant = self.view.bounds.size.width-contentOffset;
-        }];
-    
-    
+    if ( self.stretchImageView ) {
+        
+        // Animate imageview when bouncing
+        float contentOffset = scrollView.contentOffset.y;
+        if (scrollView.contentOffset.y < self.imageView.frame.size.height - self.imageView.frame.origin.y)
+            [UIView animateWithDuration:0 animations:^{
+                self.topConstraint.constant = contentOffset;
+                self.heightConstraint.constant = self.view.bounds.size.width-contentOffset;
+            }];
+    }
 }
 
 @end
