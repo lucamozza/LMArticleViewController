@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
   
   s.name         = "LMArticleViewController"
-  s.version      = "1.0"
+  s.version      = "1.1"
   s.summary      = "An Objective-C subclass of UIViewController inspired by Apple News"
   s.description  = "This subclass of UIViewController provides an article view controller with one top image, title, date, author and body labels."
 
