@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
 
   s.platform      = :ios, "9.0"
   
-  s.source	  = { :git => "https://github.com/lucamozza/LMArticleViewController.git", :tag => 'v1.0'}
+  s.source	  = { :git => "https://github.com/lucamozza/LMArticleViewController.git", :tag => 'v1.1'}
 
   s.source_files  = "LMArticleViewController", "LMArticleViewController/**/*.{h,m}"
   # s.exclude_files = "Classes/Exclude"
