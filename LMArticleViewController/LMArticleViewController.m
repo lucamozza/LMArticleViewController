@@ -26,7 +26,7 @@
 @property (strong, nonatomic) UILabel *authorLabel;
 @property (strong, nonatomic) UILabel *dateLabel;
 @property (strong, nonatomic) UIView *divider;
-@property (strong, nonatomic) UILabel *bodyLabel;
+@property (strong, nonatomic) UITextView *bodyTextView;
 @property (strong, nonatomic) NSLayoutConstraint *heightConstraint;
 @property (strong, nonatomic) NSLayoutConstraint *topConstraint;
 @property (assign, nonatomic) CGFloat lastContentOffset;
@@ -212,29 +212,29 @@
 
 - (void)setupBody {
     
-    self.bodyLabel.translatesAutoresizingMaskIntoConstraints = false;
-    [self.backgroundView addSubview:self.bodyLabel];
+    self.bodyTextView.translatesAutoresizingMaskIntoConstraints = false;
+    [self.backgroundView addSubview:self.bodyTextView];
     
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.bodyLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.dateLabel attribute:NSLayoutAttributeBottom multiplier:1 constant:20];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.bodyTextView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.dateLabel attribute:NSLayoutAttributeBottom multiplier:1 constant:20];
     constraint.active = YES;
     
-    constraint = [NSLayoutConstraint constraintWithItem:self.bodyLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.backgroundView attribute:NSLayoutAttributeLeft multiplier:1 constant:14];
+    constraint = [NSLayoutConstraint constraintWithItem:self.bodyTextView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.backgroundView attribute:NSLayoutAttributeLeft multiplier:1 constant:14];
     constraint.active = YES;
     
-    constraint = [NSLayoutConstraint constraintWithItem:self.bodyLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.backgroundView attribute:NSLayoutAttributeRight multiplier:1 constant:-14];
+    constraint = [NSLayoutConstraint constraintWithItem:self.bodyTextView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.backgroundView attribute:NSLayoutAttributeRight multiplier:1 constant:-14];
     constraint.active = YES;
     
-    constraint = [NSLayoutConstraint constraintWithItem:self.bodyLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.backgroundView attribute:NSLayoutAttributeBottom multiplier:1 constant:-30];
+    constraint = [NSLayoutConstraint constraintWithItem:self.bodyTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.backgroundView attribute:NSLayoutAttributeBottom multiplier:1 constant:-30];
     constraint.active = YES;
     
     
-    self.bodyLabel.numberOfLines = 0;
+    self.bodyTextView.scrollEnabled = NO;
     
     if (!self.bodyFont)
-        self.bodyLabel.font = [UIFont fontWithName:@"Georgia" size:20];
+        self.bodyTextView.font = [UIFont fontWithName:@"Georgia" size:20];
     else
-        self.bodyLabel.font = [self.bodyFont fontWithSize:20];
-    [self.bodyLabel sizeToFit];
+        self.bodyTextView.font = [self.bodyFont fontWithSize:20];
+    [self.bodyTextView sizeToFit];
 }
 
 // Properties setters
@@ -283,12 +283,12 @@
 
 - (void)setBody:(NSString *)body {
     _body = body;
-    self.bodyLabel.text = body;
+    self.bodyTextView.text = body;
 }
 
 - (void)setAttributedBody:(NSAttributedString *)attributedBody {
     _attributedBody = attributedBody;
-    self.bodyLabel.attributedText = attributedBody;
+    self.bodyTextView.attributedText = attributedBody;
     _body = attributedBody.string;
 }
 
@@ -320,7 +320,7 @@
 - (void)setBodyColor:(UIColor *)bodyColor {
     _bodyColor = bodyColor;
     bodyColorSet = YES;
-    self.bodyLabel.textColor = bodyColor;
+    self.bodyTextView.textColor = bodyColor;
 }
 
 - (void)setTextColor:(UIColor *)textColor {
@@ -373,10 +373,10 @@
     return _dateLabel;
 }
 
-- (UILabel *)bodyLabel {
-    if (!_bodyLabel)
-        _bodyLabel = [UILabel new];
-    return _bodyLabel;
+- (UITextView *)bodyTextView {
+    if (!_bodyTextView)
+        _bodyTextView = [UITextView new];
+    return _bodyTextView;
 }
 
 // Animation
