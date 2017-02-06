@@ -11,12 +11,13 @@
 @interface LMArticleViewController : UIViewController <UIScrollViewDelegate>
 
 // Content
-@property (strong, nonatomic, setter = setImage:      ) UIImage  *image;
-@property (strong, nonatomic, setter = setHeadline:   ) NSString *headline;
-@property (strong, nonatomic, setter = setAuthor:     ) NSString *author;
-@property (strong, nonatomic, setter = setDate:       ) NSDate   *date;
-@property (strong, nonatomic, setter = setDateString: ) NSString *dateString;
-@property (strong, nonatomic, setter = setBody:       ) NSString *body;
+@property (strong, nonatomic, setter = setImage:          ) UIImage             *image;
+@property (strong, nonatomic, setter = setHeadline:       ) NSString            *headline;
+@property (strong, nonatomic, setter = setAuthor:         ) NSString            *author;
+@property (strong, nonatomic, setter = setDate:           ) NSDate              *date;
+@property (strong, nonatomic, setter = setDateString:     ) NSString            *dateString;
+@property (strong, nonatomic, setter = setBody:           ) NSString            *body;
+@property (strong, nonatomic, setter = setAttributedBody: ) NSAttributedString  *attributedBody;
 
 // Color
 @property (nonatomic) BOOL autoColored;

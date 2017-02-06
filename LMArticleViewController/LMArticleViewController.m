@@ -286,6 +286,12 @@
     self.bodyLabel.text = body;
 }
 
+- (void)setAttributedBody:(NSAttributedString *)attributedBody {
+    _attributedBody = attributedBody;
+    self.bodyLabel.attributedText = attributedBody;
+    _body = attributedBody.string;
+}
+
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
     _backgroundColor = backgroundColor;
     backgroundColorSet = YES;
