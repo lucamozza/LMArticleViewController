@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LMArticleViewController : UIViewController <UIScrollViewDelegate>
+@interface LMArticleViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate>
 
 // Content
 @property (strong, nonatomic, setter = setImage:          ) UIImage             *image;

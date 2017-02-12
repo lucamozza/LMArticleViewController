@@ -41,19 +41,27 @@
     [super viewDidLoad];
     
     [self setupUI];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+   
     // Default background color is white
     if ( !backgroundColorSet )
         self.backgroundColor = [UIColor whiteColor];
     
+    // Default setting is yes
     if ( !stretchImageViewSet)
         self.stretchImageView = YES;
     
+    // If the author is not set empty it
+    if ([[self.authorLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"by"])
+        self.authorLabel.text = @"";
+    
+    // Add after the VC is added to a nav controller
     self.shyNavBarManager.scrollView = self.scrollView;
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -133,6 +141,8 @@
         self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     else
         self.imageView.contentMode = self.imageViewContentMode;
+    
+    self.imageView.clipsToBounds = YES;
 }
 
 - (void)setupHeadline {
@@ -227,13 +237,16 @@
     constraint = [NSLayoutConstraint constraintWithItem:self.bodyTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.backgroundView attribute:NSLayoutAttributeBottom multiplier:1 constant:-30];
     constraint.active = YES;
     
-    
+    self.bodyTextView.delegate = self;
     self.bodyTextView.scrollEnabled = NO;
+    self.bodyTextView.editable = NO;
+    self.bodyTextView.backgroundColor = [UIColor clearColor];
     
-    if (!self.bodyFont)
+    if (!self.bodyFont && !self.attributedBody)
         self.bodyTextView.font = [UIFont fontWithName:@"Georgia" size:20];
-    else
+    else if (!self.attributedBody)
         self.bodyTextView.font = [self.bodyFont fontWithSize:20];
+    
     [self.bodyTextView sizeToFit];
 }
 
@@ -395,4 +408,8 @@
     }
 }
 
+// Links
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
+    return YES;
+}
 @end
