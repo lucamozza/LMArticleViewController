@@ -8,7 +8,8 @@
 
 #import "LMArticleViewController.h"
 #import <TLYShyNavBar/TLYShyNavBarManager.h>
-#import <ChameleonFramework/Chameleon.h>
+#import <ColorArt/UIImage+ColorArt.h>
+#import <IDMPhotoBrowser/IDMPhotoBrowser.h>
 
 @interface LMArticleViewController () {
     BOOL backgroundColorSet;
@@ -143,6 +144,11 @@
         self.imageView.contentMode = self.imageViewContentMode;
     
     self.imageView.clipsToBounds = YES;
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openImage)];
+    singleTap.numberOfTapsRequired = 1;
+    self.imageView.userInteractionEnabled = YES;
+    [self.imageView addGestureRecognizer:singleTap];
 }
 
 - (void)setupHeadline {
@@ -266,8 +272,12 @@
     self.heightConstraint.constant = imageViewHeight;
     
     if ( self.autoColored ) {
-        self.backgroundColor = [UIColor colorWithAverageColorFromImage:image];
-        self.textColor = [UIColor colorWithContrastingBlackOrWhiteColorOn:self.backgroundColor isFlat:NO];
+        SLColorArt *colorArt = [image colorArt];
+        self.backgroundColor = colorArt.backgroundColor;
+        self.headlineColor   = colorArt.primaryColor;
+        self.dateColor       = colorArt.secondaryColor;
+        self.authorColor     = colorArt.secondaryColor;
+        self.bodyColor       = colorArt.detailColor;
     }
     
 }
@@ -334,6 +344,11 @@
     _bodyColor = bodyColor;
     bodyColorSet = YES;
     self.bodyTextView.textColor = bodyColor;
+    if (self.attributedBody) {
+        NSMutableAttributedString *mutable = self.attributedBody.mutableCopy;
+        [mutable addAttribute:NSForegroundColorAttributeName value:bodyColor range:NSMakeRange(0, self.attributedBody.length)];
+        self.attributedBody = mutable;
+    }
 }
 
 - (void)setTextColor:(UIColor *)textColor {
@@ -395,7 +410,6 @@
 // Animation
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
     if ( self.stretchImageView ) {
         
         // Animate imageview when bouncing
@@ -406,6 +420,14 @@
                 self.heightConstraint.constant = self.view.bounds.size.width-contentOffset;
             }];
     }
+}
+
+- (void)openImage {
+    IDMPhoto *photo = [IDMPhoto photoWithImage:self.image];
+    IDMPhotoBrowser *browser = [[IDMPhotoBrowser alloc]initWithPhotos:@[photo]animatedFromView:self.imageView];
+    browser.scaleImage = self.image;
+    browser.displayActionButton = NO;
+    [self presentViewController:browser animated:YES completion:^{}];
 }
 
 // Links
