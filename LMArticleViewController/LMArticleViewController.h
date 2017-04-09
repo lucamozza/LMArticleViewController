@@ -21,6 +21,7 @@
 
 // Color
 @property (nonatomic) BOOL autoColored;
+@property (nonatomic) BOOL navBarAutoColored;
 @property (strong, nonatomic, setter = setBackgroundColor:  ) UIColor *backgroundColor;
 @property (strong, nonatomic, setter = setHeadlineColor:    ) UIColor *headlineColor;
 @property (strong, nonatomic, setter = setDateColor:        ) UIColor *dateColor;

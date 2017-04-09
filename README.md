@@ -6,7 +6,9 @@
 This framework allows you to create Apple News-inspired UIViewControllers with ease.
 
 It is heavily inspired by [MRArticleViewController], in fact the core is a simple translation of it. However I added some features I thought could be useful.
+![Preview 1](/img-1.png)
 
+![Preview 2](/img-2.png)
 ## Features
 The layout is shown in the images above, here's some extra features.
 #### Animations
@@ -72,7 +74,6 @@ You can either subclass `LMArticleViewController` and set the contents in the `v
 
 ## To-Do List
 - [ ] Adjust image view size and proportions.
-- [ ] Use [ColorArt] instead of [Chamaleon] (?)
 
 
 [MRArticleViewController]: https://github.com/mrigdon/MRArticleViewController

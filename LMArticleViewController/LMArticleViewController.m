@@ -42,7 +42,6 @@
     [super viewDidLoad];
     
     [self setupUI];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -258,6 +257,26 @@
 
 // Properties setters
 
+- (void)setAutoColored:(BOOL)autoColored {
+    _autoColored = autoColored;
+    if ( self.image ) {
+        SLColorArt *colorArt = [self.image colorArt];
+        self.backgroundColor = colorArt.backgroundColor;
+        self.headlineColor   = colorArt.primaryColor;
+        self.dateColor       = colorArt.secondaryColor;
+        self.authorColor     = colorArt.secondaryColor;
+        self.bodyColor       = colorArt.detailColor;
+    }
+}
+
+- (void)setNavBarAutoColored:(BOOL)navBarAutoColored {
+    _navBarAutoColored = navBarAutoColored;
+    if ( self.navBarAutoColored ) {
+        SLColorArt *colorArt = [self.image colorArt];
+        self.navigationController.navigationBar.tintColor = colorArt.secondaryColor;
+        self.navigationController.navigationBar.barTintColor = colorArt.backgroundColor;
+    }
+}
 - (void)setImage:(UIImage *)image {
     
     _image = image;
@@ -271,13 +290,20 @@
     
     self.heightConstraint.constant = imageViewHeight;
     
+    SLColorArt *colorArt = [image colorArt];
     if ( self.autoColored ) {
-        SLColorArt *colorArt = [image colorArt];
         self.backgroundColor = colorArt.backgroundColor;
         self.headlineColor   = colorArt.primaryColor;
         self.dateColor       = colorArt.secondaryColor;
         self.authorColor     = colorArt.secondaryColor;
         self.bodyColor       = colorArt.detailColor;
+    }
+    
+    if ( self.navBarAutoColored ) {
+        self.navigationController.navigationBar.translucent = NO;
+        self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+        self.navigationController.navigationBar.barTintColor = colorArt.backgroundColor;
+        self.navigationController.navigationBar.tintColor    = colorArt.secondaryColor;
     }
     
 }
@@ -422,7 +448,7 @@
     }
 }
 
-- (void)openImage {
+- (void)openImage {
     IDMPhoto *photo = [IDMPhoto photoWithImage:self.image];
     IDMPhotoBrowser *browser = [[IDMPhotoBrowser alloc]initWithPhotos:@[photo]animatedFromView:self.imageView];
     browser.scaleImage = self.image;
