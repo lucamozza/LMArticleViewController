@@ -275,6 +275,8 @@
         SLColorArt *colorArt = [self.image colorArt];
         self.navigationController.navigationBar.tintColor = colorArt.secondaryColor;
         self.navigationController.navigationBar.barTintColor = colorArt.backgroundColor;
+        [self.navigationController.navigationBar setTitleTextAttributes:
+         @{NSForegroundColorAttributeName:colorArt.secondaryColor}];
     }
 }
 - (void)setImage:(UIImage *)image {
@@ -300,10 +302,10 @@
     }
     
     if ( self.navBarAutoColored ) {
-        self.navigationController.navigationBar.translucent = NO;
-        self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+        self.navigationController.navigationBar.tintColor = colorArt.secondaryColor;
         self.navigationController.navigationBar.barTintColor = colorArt.backgroundColor;
-        self.navigationController.navigationBar.tintColor    = colorArt.secondaryColor;
+        [self.navigationController.navigationBar setTitleTextAttributes:
+         @{NSForegroundColorAttributeName:colorArt.secondaryColor}];
     }
     
 }
